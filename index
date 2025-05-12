@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fun Sandwich Approach Exercise</title>
+  <style>
+    :root {
+      --primary: #2b2d42;
+      --accent: #8d99ae;
+      --highlight: #ef233c;
+      --bg: #edf2f4;
+      --text: #333;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    .container { max-width: 800px; margin: 2rem auto; padding: 1rem; background: #fff; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+    h1 { text-align: center; margin-bottom: 1rem; color: var(--primary); }
+    .step { display: none; }
+    .step.active { display: block; }
+    .buttons { margin-top: 1.5rem; display: flex; justify-content: space-between; }
+    button { background: var(--highlight); border: none; color: #fff; padding: 0.75rem 1.5rem; border-radius: 4px; cursor: pointer; transition: background 0.2s; }
+    button:disabled { opacity: 0.5; cursor: default; }
+    button:hover:not(:disabled) { background: #d90429; }
+    textarea { width: 100%; height: 120px; padding: 0.5rem; border: 1px solid var(--accent); border-radius: 4px; margin-bottom: 1rem; }
+    .feedback { margin-top: 1rem; background: #f8f9fa; padding: 1rem; border-radius: 4px; border: 1px solid var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Fun Sandwich Approach Exercise</h1>
+    <!-- Step containers -->
+    <div id="steps"></div>
+    <!-- Navigation -->
+    <div class="buttons">
+      <button id="prevBtn">← Previous</button>
+      <button id="nextBtn">Next →</button>
+    </div>
+  </div>
+
+  <script>
+    const steps = [
+      {
+        title: 'Overview',
+        content: `
+          <p>Weaving the <strong>fun sandwich</strong> combines:</p>
+          <ul>
+            <li>A playful opening</li>
+            <li>A neutral/scene-setting middle</li>
+            <li>A memorable, fun close</li>
+          </ul>
+          <p>This structure makes you stand out and keeps interaction light.</p>
+        `
+      },
+      {
+        title: 'Step-by-Step',
+        content: `
+          <ol>
+            <li><strong>Set the scene</strong> (e.g., "Nice setup at the beach!").</li>
+            <li><strong>Neutral comment</strong> without intro (e.g., "That cooler looks fully stocked").</li>
+            <li><strong>Fun uplift</strong> (e.g., "Mind teaching my towel some tricks?").</li>
+            <li><strong>Introduce yourself:</strong> "By the way, I’m Eric."</li>
+            <li><strong>Thread into questions:</strong> "What brought you here today?"</li>
+            <li><strong>Callback/pin:</strong> Tie back to your fun opener.</li>
+          </ol>
+        `
+      },
+      {
+        title: 'Example',
+        content: `
+          <p><em>“Lovely day at the beach—your setup is next level. All I brought was a towel, so you’re putting me to shame! I’m Eric. What’s been the highlight of your day here?”</em></p>
+          <p>This covers all sandwich components: fun opener, neutral middle, fun close, intro, and a question.</p>
+        `
+      },
+      {
+        title: 'Your Turn',
+        content: `
+          <p>Pick a scene. Write your own fun sandwich approach below:</p>
+          <textarea id="userInput" placeholder="E.g., Hey, great coffee setup..."></textarea>
+          <button id="submitBtn">Submit</button>
+          <div id="feedback" class="feedback"></div>
+        `
+      },
+      {
+        title: 'Reflection & Questions',
+        content: `
+          <p>Reflect on your approach:</p>
+          <ul>
+            <li>Which fun opener did you choose?</li>
+            <li>How did you weave in the neutral comment?</li>
+            <li>What callback did you use at the end?</li>
+          </ul>
+        `
+      }
+    ];
+
+    let current = 0;
+    const stepsContainer = document.getElementById('steps');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function renderSteps() {
+      steps.forEach((step, i) => {
+        const div = document.createElement('div');
+        div.className = 'step' + (i === 0 ? ' active' : '');
+        div.innerHTML = `<h2>${step.title}</h2>${step.content}`;
+        stepsContainer.appendChild(div);
+      });
+    }
+
+    function showStep(index) {
+      const all = document.querySelectorAll('.step');
+      all.forEach((s, i) => s.classList.toggle('active', i === index));
+      prevBtn.disabled = index === 0;
+      nextBtn.disabled = index === steps.length - 1;
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if (current > 0) current--;
+      showStep(current);
+    });
+    nextBtn.addEventListener('click', () => {
+      if (current < steps.length - 1) current++;
+      showStep(current);
+    });
+
+    // Handle user submission
+    document.addEventListener('click', (e) => {
+      if (e.target.id === 'submitBtn') {
+        const text = document.getElementById('userInput').value.trim();
+        const fb = document.getElementById('feedback');
+        if (!text) {
+          fb.textContent = 'Please write your approach above.';
+          return;
+        }
+        fb.textContent = 'Nice work! You captured the fun sandwich flow. Remember: opener, neutral, close, intro, question.';
+      }
+    });
+
+    // Initialize
+    renderSteps();
+    showStep(0);
+  </script>
+</body>
+</html>
