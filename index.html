@@ -3,142 +3,174 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fun Sandwich Approach Exercise | Jaunty Gym</title>
-  <!-- Tailwind config must come before the CDN load -->
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#2b2d42',
-            accent: '#8d99ae',
-            highlight: '#ef233c',
-            bg: '#edf2f4'
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif']
-          }
-        }
-      }
+  <title>Fun Sandwich Approach Exercise</title>
+  <style>
+    :root {
+      --primary: #2b2d42;
+      --accent: #8d99ae;
+      --highlight: #ef233c;
+      --bg: #edf2f4;
+      --text: #333;
     }
-  </script>
-  <script src="https://cdn.tailwindcss.com"></script>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { 
+      font-family: 'Segoe UI', sans-serif; 
+      background: var(--bg); 
+      color: var(--text); 
+      line-height: 1.6; 
+    }
+    .container { 
+      max-width: 800px; 
+      margin: 2rem auto; 
+      padding: 1rem; 
+      background: #fff; 
+      border-radius: 8px; 
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1); 
+    }
+    h1 { text-align: center; margin-bottom: 1rem; color: var(--primary); }
+    .step { display: none; }
+    .step.active { display: block; }
+    .buttons { margin-top: 1.5rem; display: flex; justify-content: space-between; }
+    button { 
+      background: var(--highlight); 
+      border: none; 
+      color: #fff; 
+      padding: 0.75rem 1.5rem; 
+      border-radius: 4px; 
+      cursor: pointer; 
+      transition: background 0.2s; 
+    }
+    button:disabled { opacity: 0.5; cursor: default; }
+    button:hover:not(:disabled) { background: #d90429; }
+    textarea { 
+      width: 100%; 
+      height: 120px; 
+      padding: 0.5rem; 
+      border: 1px solid var(--accent); 
+      border-radius: 4px; 
+      margin-bottom: 1rem; 
+    }
+    .feedback { 
+      margin-top: 1rem; 
+      background: #f8f9fa; 
+      padding: 1rem; 
+      border-radius: 4px; 
+      border: 1px solid var(--accent); 
+    }
+  </style>
 </head>
-<body class="bg-bg font-sans min-h-screen flex flex-col">
-
-  <!-- HEADER -->
-  <header class="bg-white shadow-md">
-    <div class="max-w-4xl mx-auto px-6 py-4 flex items-center">
-      <!-- Replace with your hosted logo.svg or inline SVG -->
-      <div class="flex-shrink-0">
-        <span class="text-2xl font-bold text-primary">Jaunty.org</span>
-      </div>
-      <h1 class="ml-4 text-2xl font-extrabold text-primary">Fun Sandwich Approach</h1>
-    </div>
-  </header>
-
-  <!-- MAIN CONTENT -->
-  <main class="flex-grow max-w-4xl mx-auto px-6 py-8">
-    <!-- Progress bar -->
-    <div class="w-full h-2 bg-accent rounded-full overflow-hidden mb-6">
-      <div id="progressBar" class="h-full bg-highlight transition-all duration-300" style="width: 0%"></div>
-    </div>
-
-    <!-- Steps container -->
-    <section id="steps" class="space-y-12"></section>
-
+<body>
+  <div class="container">
+    <h1>Fun Sandwich Approach Exercise</h1>
+    <!-- Step containers -->
+    <div id="steps"></div>
     <!-- Navigation -->
-    <div class="mt-8 flex justify-between">
-      <button id="prevBtn" class="px-5 py-2 bg-primary text-white rounded-lg shadow hover:opacity-90 disabled:opacity-50" disabled>
-        ← Previous
-      </button>
-      <button id="nextBtn" class="px-5 py-2 bg-highlight text-white rounded-lg shadow hover:opacity-90">
-        Next →
-      </button>
+    <div class="buttons">
+      <button id="prevBtn">← Previous</button>
+      <button id="nextBtn">Next →</button>
     </div>
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="bg-white py-4 mt-12 shadow-inner">
-    <p class="text-center text-accent text-sm">© 2025 Jaunty.org</p>
-  </footer>
+  </div>
 
   <script>
     const steps = [
       {
         title: 'Overview',
-        content: `<p class="text-lg">Weaving the <strong>fun sandwich</strong> combines:</p>
-                  <ul class="list-disc list-inside space-y-1 mt-2">
-                    <li>A playful opening</li>
-                    <li>A neutral, scene-setting middle</li>
-                    <li>A memorable, fun close</li>
-                  </ul>`
+        content: `
+          <p>Weaving the <strong>fun sandwich</strong> combines:</p>
+          <ul>
+            <li>A playful opening</li>
+            <li>A neutral/scene-setting middle</li>
+            <li>A memorable, fun close</li>
+          </ul>
+          <p>This structure makes you stand out and keeps interaction light.</p>
+        `
       },
       {
         title: 'Step-by-Step',
-        content: `<ol class="list-decimal list-inside space-y-2 mt-2">
-                    <li><strong>Set the scene</strong> (e.g., "Hey, your coffee setup could power a startup!")</li>
-                    <li><strong>Neutral comment</strong> (e.g., "Reminds me of my time in SF")</li>
-                    <li><strong>Fun uplift</strong> (e.g., "That’s got me buzzing more than my espresso!")</li>
-                    <li><strong>Introduction</strong>: "By the way, I’m Eric."</li>
-                    <li><strong>Question</strong>: "What’s the best sip you’ve had today?"</li>
-                    <li><strong>Callback</strong>: Tie back to your opener.</li>
-                  </ol>`
+        content: `
+          <ol>
+            <li><strong>Set the scene</strong> (e.g., "Hey, you've got enough coffee there to run a whole startup!").</li>
+            <li><strong>Neutral comment</strong> (e.g., "Reminds me of my days in San Francisco.").</li>
+            <li><strong>Fun uplift</strong> (e.g., "You're giving me flashbacks, but also inspiring my creative side!").</li>
+            <li><strong>Introduce yourself:</strong> "By the way, I’m Eric."</li>
+            <li><strong>Ask a question:</strong> "What are you working on?"</li>
+            <li><strong>Callback:</strong> Tie back to your fun opener (e.g., "Don't forget about the little people when you get funded on Shark Tank!").</li>
+          </ol>
+        `
       },
       {
         title: 'Example',
-        content: `<blockquote class="border-l-4 border-highlight italic pl-4 text-gray-700">
-                    “Lovely day at the beach—your setup is next level. All I brought was a towel, so you’re putting me to shame! I’m Eric. What’s been the highlight of your day here?”
-                  </blockquote>`
+        content: `
+          <p><em>“Lovely day at the beach—your setup is next level. All I brought was a towel, so you’re putting me to shame! I’m Eric. What’s been the highlight of your day here?”</em></p>
+          <p>This covers all sandwich parts: opener, neutral middle, fun close, intro, and question.</p>
+        `
       },
       {
         title: 'Your Turn',
-        content: `<p class="text-lg">Pick a scene and craft your own <em>fun sandwich</em> below:</p>
-                  <textarea id="userInput" class="mt-4 w-full p-4 border-2 border-accent rounded-lg h-32" placeholder="E.g., Hey, great coffee setup..."></textarea>
-                  <button id="submitBtn" class="mt-4 px-5 py-2 bg-primary text-white rounded-lg shadow hover:opacity-90">Submit</button>
-                  <div id="feedback" class="mt-4 text-center font-medium text-highlight"></div>`
+        content: `
+          <p>Pick a scene. Write your own fun sandwich approach below:</p>
+          <textarea id="userInput" placeholder="E.g., Hey, great coffee setup..."></textarea>
+          <button id="submitBtn">Submit</button>
+          <div id="feedback" class="feedback"></div>
+        `
       },
       {
         title: 'Reflection & Questions',
-        content: `<p class="text-lg">Reflect on:</p>
-                  <ul class="list-disc list-inside space-y-1 mt-2">
-                    <li>Your chosen opener</li>
-                    <li>How you flowed from neutral to fun</li>
-                    <li>Your callback technique</li>
-                  </ul>`
+        content: `
+          <p>Reflect on your approach:</p>
+          <ul>
+            <li>Which fun opener did you choose?</li>
+            <li>How did you weave in the neutral comment?</li>
+            <li>What callback did you use at the end?</li>
+          </ul>
+        `
       }
     ];
 
     let current = 0;
-    const container = document.getElementById('steps');
+    const stepsContainer = document.getElementById('steps');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
-    const progress = document.getElementById('progressBar');
 
-    function render() {
-      container.innerHTML = ''; // clear
-      const step = steps[current];
-      const section = document.createElement('div');
-      section.innerHTML = `<h2 class="text-xl font-semibold text-primary mb-2">${step.title}</h2>${step.content}`;
-      container.appendChild(section);
-      prevBtn.disabled = current === 0;
-      nextBtn.disabled = current === steps.length - 1;
-      progress.style.width = `${((current + 1) / steps.length) * 100}%`;
+    function renderSteps() {
+      steps.forEach((step, i) => {
+        const div = document.createElement('div');
+        div.className = 'step' + (i === 0 ? ' active' : '');
+        div.innerHTML = `<h2>${step.title}</h2>${step.content}`;
+        stepsContainer.appendChild(div);
+      });
     }
 
-    prevBtn.addEventListener('click', () => { if (current > 0) current--; render(); });
-    nextBtn.addEventListener('click', () => { if (current < steps.length - 1) current++; render(); });
+    function showStep(index) {
+      const all = document.querySelectorAll('.step');
+      all.forEach((s, i) => s.classList.toggle('active', i === index));
+      prevBtn.disabled = index === 0;
+      nextBtn.disabled = index === steps.length - 1;
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if (current > 0) current--;
+      showStep(current);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (current < steps.length - 1) current++;
+      showStep(current);
+    });
 
     document.addEventListener('click', (e) => {
       if (e.target.id === 'submitBtn') {
-        const input = document.getElementById('userInput').value.trim();
+        const text = document.getElementById('userInput').value.trim();
         const fb = document.getElementById('feedback');
-        fb.textContent = input ? '🚀 Nice! You nailed the fun sandwich.' : '⚠️ Please craft your approach above.';
+        fb.textContent = text
+          ? 'Nice work! You captured the fun sandwich flow. Remember: opener, neutral, close, intro, question.'
+          : 'Please write your approach above.';
       }
     });
 
-    // Initialize first view
-    render();
+    // Initialize
+    renderSteps();
+    showStep(0);
   </script>
 </body>
 </html>
